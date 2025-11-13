@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chef's Foodie - Restaurant</title>
+    <style>
+        /* Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f9f9f9;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Header Styles */
+        header {
+            background-color: #fff;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .logo h1 {
+            font-size: 28px;
+            color: #e74c3c;
+        }
+        
+        .logo span {
+            color: #333;
+            font-weight: 300;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 25px;
+        }
+        
+        nav a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        nav a:hover {
+            color: #e74c3c;
+        }
+        
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1504674900247-0877df9cc836?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 100px 0;
+            text-align: center;
+        }
+        
+        .hero h2 {
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+        
+        .hero p {
+            font-size: 20px;
+            max-width: 700px;
+            margin: 0 auto 30px;
+        }
+        
+        .btn {
+            display: inline-block;
+            background-color: #e74c3c;
+            color: white;
+            padding: 12px 30px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: background-color 0.3s;
+        }
+        
+        .btn:hover {
+            background-color: #c0392b;
+        }
+        
+        /* About Section */
+        .about {
+            padding: 80px 0;
+            text-align: center;
+        }
+        
+        .about h2 {
+            font-size: 36px;
+            margin-bottom: 20px;
+            color: #333;
+        }
+        
+        .about p {
+            max-width: 800px;
+            margin: 0 auto;
+            font-size: 18px;
+            color: #666;
+        }
+        
+        /* Menu Section */
+        .menu {
+            padding: 80px 0;
+            background-color: #fff;
+        }
+        
+        .section-title {
+            text-align: center;
+            font-size: 36px;
+            margin-bottom: 50px;
+            color: #333;
+        }
+        
+        .menu-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+        
+        .total-items {
+            font-size: 18px;
+            color: #666;
+        }
+        
+        .add-item-btn {
+            background-color: #2ecc71;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background-color 0.3s;
+        }
+        
+        .add-item-btn:hover {
+            background-color: #27ae60;
+        }
+        
+        .menu-items {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 30px;
+        }
+        
+        .menu-item {
+            background-color: #f9f9f9;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+        
+        .menu-item:hover {
+            transform: translateY(-5px);
+        }
+        
+        .menu-item-img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+        
+        .menu-item-content {
+            padding: 20px;
+        }
+        
+        .menu-item-title {
+            font-size: 20px;
+            margin-bottom: 10px;
+            color: #333;
+        }
+        
+        .menu-item-description {
+            color: #666;
+            margin-bottom: 15px;
+        }
+        
+        .menu-item-price {
+            font-size: 18px;
+            font-weight: 600;
+            color: #e74c3c;
+        }
+        
+        /* Add Menu Form */
+        .add-menu-form {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            margin-top: 40px;
+            display: none;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+        
+        .form-group input, 
+        .form-group select, 
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        
+        .form-group textarea {
+            height: 100px;
+            resize: vertical;
+        }
+        
+        .form-buttons {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .submit-btn {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+        
+        .cancel-btn {
+            background-color: #95a5a6;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+        
+        /* Footer */
+        footer {
+            background-color: #333;
+            color: white;
+            padding: 40px 0;
+            text-align: center;
+        }
+        
+        .footer-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+        
+        .footer-logo {
+            font-size: 24px;
+            color: #000000;
+        }
+        
+        .copyright {
+            color: #bbb;
+            font-size: 14px;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            nav ul {
+                gap: 15px;
+            }
+            
+            .hero h2 {
+                font-size: 36px;
+            }
+            
+            .menu-controls {
+                flex-direction: column;
+                gap: 15px;
+                align-items: flex-start;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <h1>Foodie<span>RESTAURANT</span></h1>
+                </div>
+                <nav>
+                    <ul>
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#dish">Dish</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="container">
+            <h2>JUST order your Favorite Meal</h2>
+            <p>Chef's Foodie is an online platform where users can browse and purchase delicious dinner meals plans,crafted by experience chefs. The website aims to
+            provide healty, convenient,and mounth-watering means for busy individuals and families.</p>
+            <a href="#menu" class="btn">Starving</a>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="about" id="about">
+        <div class="container">
+            <h2>About Chef's Foodie</h2>
+            <p>The website aims to provide healthy, convenient and mouth-watering meals for busy individuals and families. Our experienced chefs craft each dish with care, using the freshest ingredients to deliver exceptional dining experiences.</p>
+        </div>
+    </section>
+
+    <!-- Menu Section -->
+    <section class="menu" id="menu">
+        <div class="container">
+            <h2 class="section-title">Our Menu</h2>
+            
+            <div class="menu-controls">
+                <div class="total-items">Total Items: <span id="item-count">4</span></div>
+                <button class="add-item-btn" id="show-form-btn">Add Menu Item</button>
+            </div>
+            
+            <div class="menu-items" id="menu-items-container">
+                <!-- Menu items will be dynamically added here -->
+            </div>
+            
+            <!-- Add Menu Form -->
+            <div class="add-menu-form" id="add-menu-form">
+                <h3>Add New Menu Item</h3>
+                <form id="menu-form">
+                    <div class="form-group">
+                        <label for="dish-name">Dish Name</label>
+                        <input type="text" id="dish-name" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="dish-description">Description</label>
+                        <textarea id="dish-description" required></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="course">Course</label>
+                        <select id="course" required>
+                            <option value="">Select a course</option>
+                            <option value="starters">Starters</option>
+                            <option value="mains">Mains</option>
+                            <option value="desserts">Desserts</option>
+                            <option value="beverages">Beverages</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="price">Price (R)</label>
+                        <input type="number" id="price" min="0" step="0.01" required>
+                    </div>
+                    
+                    <div class="form-buttons">
+                        <button type="submit" class="submit-btn">Add to Menu</button>
+                        <button type="button" class="cancel-btn" id="cancel-form-btn">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">Foodie</div>
+                <p class="copyright">Copyright@2025 Foodie Restaurant</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Initial menu items
+        const initialMenuItems = [
+            {
+                name: "Chicken Fiest",
+                description: "Tender chicken with our special fiest seasoning",
+                course: "mains",
+                price: 35,
+                image: "https://images.unsplash.com/photo-1606755962773-d324e7452491?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"
+            },
+            {
+                name: "Steak Fiest",
+                description: "Juicy steak cooked to perfection with fiest flavors",
+                course: "mains",
+                price: 45,
+                image: "https://images.unsplash.com/photo-1546964124-0cce460f38ef?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"
+            },
+            {
+                name: "Ducked Fiest",
+                description: "Crispy duck with our signature fiest sauce",
+                course: "mains",
+                price: 32,
+                image: "https://images.unsplash.com/photo-1551028195-7a4dce2c71fd?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"
+            },
+            {
+                name: "Fish fur Fiest",
+                description: "Fresh fish with a fiest crust and lemon butter sauce",
+                course: "mains",
+                price: 28,
+                image: "https://images.unsplash.com/photo-1598514982191-43395eccb45c?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"
+            }
+        ];
+
+        // DOM Elements
+        const menuItemsContainer = document.getElementById('menu-items-container');
+        const itemCountElement = document.getElementById('item-count');
+        const showFormBtn = document.getElementById('show-form-btn');
+        const addMenuForm = document.getElementById('add-menu-form');
+        const cancelFormBtn = document.getElementById('cancel-form-btn');
+        const menuForm = document.getElementById('menu-form');
+
+        // Initialize menu
+        let menuItems = [...initialMenuItems];
+        renderMenu();
+
+        // Show add menu form
+        showFormBtn.addEventListener('click', () => {
+            addMenuForm.style.display = 'block';
+        });
+
+        // Hide add menu form
+        cancelFormBtn.addEventListener('click', () => {
+            addMenuForm.style.display = 'none';
+            menuForm.reset();
+        });
+
+        // Handle form submission
+        menuForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const dishName = document.getElementById('dish-name').value;
+            const dishDescription = document.getElementById('dish-description').value;
+            const course = document.getElementById('course').value;
+            const price = parseFloat(document.getElementById('price').value);
+            
+            // Create new menu item
+            const newMenuItem = {
+                name: dishName,
+                description: dishDescription,
+                course: course,
+                price: price,
+                image: "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" // Default image
+            };
+            
+            // Add to menu
+            menuItems.push(newMenuItem);
+            
+            // Update UI
+            renderMenu();
+            
+            // Reset and hide form
+            menuForm.reset();
+            addMenuForm.style.display = 'none';
+        });
+
+        // Render menu items
+        function renderMenu() {
+            // Clear container
+            menuItemsContainer.innerHTML = '';
+            
+            // Update item count
+            itemCountElement.textContent = menuItems.length;
+            
+            // Add each menu item
+            menuItems.forEach(item => {
+                const menuItemElement = document.createElement('div');
+                menuItemElement.className = 'menu-item';
+                
+                menuItemElement.innerHTML = `
+                    <img src="${item.image}" alt="${item.name}" class="menu-item-img">
+                    <div class="menu-item-content">
+                        <h3 class="menu-item-title">${item.name}</h3>
+                        <p class="menu-item-description">${item.description}</p>
+                        <div class="menu-item-price">R${item.price}</div>
+                    </div>
+                `;
+                
+                menuItemsContainer.appendChild(menuItemElement);
+            });
+        }
+    </script>
+</body>
+</html>
